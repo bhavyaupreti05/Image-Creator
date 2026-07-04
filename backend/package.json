@@ -1,0 +1,21 @@
+{
+  "name": "image-creator-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "cloudinary": "^2.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^8.1.0",
+    "mongoose": "^8.17.0",
+    "morgan": "^1.10.4",
+    "openai": "^4.57.0"
+  }
+}
