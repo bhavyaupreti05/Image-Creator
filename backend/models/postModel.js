@@ -19,6 +19,19 @@ const postSchema = new mongoose.Schema(
       required: [true, 'Photo URL is required'],
       trim: true,
     },
+    likes: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    styleTags: {
+      type: [String],
+      default: [],
+    },
+    parentId: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,
