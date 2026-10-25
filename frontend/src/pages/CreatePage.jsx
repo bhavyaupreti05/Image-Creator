@@ -79,7 +79,9 @@ const CreatePage = () => {
       );
     } catch (error) {
       setLoading(false);
-      toast.error(error?.response?.data?.message || 'Failed to submit generation job');
+      const isNetwork = !error?.response;
+      const msg = error?.response?.data?.message || (isNetwork ? 'API waking up from sleep. Please retry in 15 seconds!' : 'Failed to submit generation job');
+      toast.error(msg);
     }
   };
 

@@ -1,4 +1,4 @@
-import api from './api';
+import api, { getBaseApiUrl } from './api';
 
 export const getPosts = async (page = 1, limit = 12, tag = '') => {
   const tagParam = tag && tag !== 'All' ? `&tag=${encodeURIComponent(tag)}` : '';
@@ -42,7 +42,7 @@ export const createGenerationJob = async (prompt) => {
 };
 
 export const streamJobProgress = (jobId, onProgress, onComplete, onError) => {
-  const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+  const baseUrl = getBaseApiUrl();
   const eventSource = new EventSource(`${baseUrl}/images/jobs/${jobId}/stream`);
 
   eventSource.onmessage = (event) => {
