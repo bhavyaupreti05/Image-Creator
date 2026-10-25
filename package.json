@@ -16,6 +16,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
+    "postinstall": "npm install --prefix backend",
     "start": "npm start --prefix backend",
     "build": "npm install --prefix backend",
     "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run start --prefix backend\"",
