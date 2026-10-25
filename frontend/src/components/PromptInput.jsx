@@ -1,21 +1,29 @@
+import { ShuffleIcon } from './Icons';
+
 const PromptInput = ({ value, onChange, onRandomize }) => {
   return (
-    <div className="space-y-3">
-      <label className="text-sm font-medium text-slate-200">Prompt</label>
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <label className="text-xs font-medium uppercase tracking-wider text-zinc-400">
+          Prompt
+        </label>
+        <button
+          type="button"
+          onClick={onRandomize}
+          className="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-zinc-400 transition hover:bg-zinc-800 hover:text-zinc-200"
+        >
+          <ShuffleIcon className="h-3 w-3" />
+          <span>Surprise me</span>
+        </button>
+      </div>
+
       <textarea
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        rows={5}
-        className="w-full rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500"
-        placeholder="Describe the image you want to create"
+        rows={4}
+        className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 p-3.5 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 leading-relaxed"
+        placeholder="Describe the scene, subject, lighting, and medium..."
       />
-      <button
-        type="button"
-        onClick={onRandomize}
-        className="rounded-full border border-slate-700 px-4 py-2 text-sm text-slate-300 transition hover:bg-slate-800"
-      >
-        Random Prompt
-      </button>
     </div>
   );
 };

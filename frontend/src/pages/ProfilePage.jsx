@@ -6,6 +6,7 @@ import ImageCard from '../components/ImageCard';
 import LightboxModal from '../components/LightboxModal';
 import Loader from '../components/Loader';
 import EmptyState from '../components/EmptyState';
+import { BookmarkIcon, BranchIcon, HeartIcon, PlusIcon } from '../components/Icons';
 import { getCreatorProfile, likePost } from '../services/postService';
 
 const ProfilePage = () => {
@@ -73,10 +74,10 @@ const ProfilePage = () => {
     let next;
     if (isSaved) {
       next = savedPosts.filter((p) => p._id !== post._id);
-      toast.success('Removed from Moodboard');
+      toast.success('Removed from saved');
     } else {
       next = [post, ...savedPosts];
-      toast.success('Saved to your Moodboard! 🔖');
+      toast.success('Saved to collection');
     }
     setSavedPosts(next);
     localStorage.setItem('aura_saved_moodboard', JSON.stringify(next));
@@ -101,7 +102,7 @@ const ProfilePage = () => {
     totalCreations: 0,
     totalLikes: 0,
     totalRemixes: 0,
-    bio: 'Generative AI Creator exploring prompt latent spaces.',
+    bio: 'Digital creator exploring generative prompt systems.',
   };
 
   const creations = profileData?.creations || [];
@@ -120,125 +121,135 @@ const ProfilePage = () => {
     <div className="space-y-8">
       {/* Creator Profile Header Card */}
       <motion.section
-        initial={{ opacity: 0, y: 15 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-[2.5rem] border border-slate-800 bg-gradient-to-b from-slate-900/90 to-slate-950/80 p-6 shadow-2xl backdrop-blur sm:p-10"
+        transition={{ duration: 0.2 }}
+        className="relative overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-900/40 p-6 sm:p-8"
       >
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           {/* Avatar & Bio */}
-          <div className="flex items-center gap-5">
-            <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-tr from-cyan-400 via-indigo-500 to-purple-600 text-2xl font-black text-white shadow-xl shadow-cyan-500/20 sm:h-24 sm:w-24">
+          <div className="flex items-center gap-4 sm:gap-5">
+            <div className="relative flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full bg-zinc-800 border border-zinc-700 text-xl sm:text-2xl font-semibold text-white shadow-sm">
               {creatorInitial}
-              <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-slate-900 bg-emerald-500 text-[10px] text-white">
+              <span className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full border-2 border-zinc-900 bg-emerald-500 text-[9px] text-white">
                 ✓
               </span>
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-2xl font-extrabold text-white sm:text-3xl">
+                <h1 className="text-xl sm:text-2xl font-semibold text-white">
                   {creator.displayName}
                 </h1>
-                <span className="rounded-full border border-cyan-500/30 bg-cyan-500/10 px-2.5 py-0.5 text-xs font-semibold text-cyan-300">
+                <span className="rounded-md border border-zinc-800 bg-zinc-950/70 px-2 py-0.5 text-xs font-medium text-zinc-400">
                   {creator.username}
                 </span>
               </div>
-              <p className="max-w-md text-xs text-slate-400 sm:text-sm">{creator.bio}</p>
+              <p className="max-w-md text-xs sm:text-sm text-zinc-400 leading-relaxed">{creator.bio}</p>
             </div>
           </div>
 
-          {/* Action Buttons & Follow Toggle */}
-          <div className="flex items-center gap-3">
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2.5">
             <button
               type="button"
               onClick={handleFollowToggle}
-              className={`rounded-full px-6 py-2.5 text-xs font-bold transition active:scale-95 ${
+              className={`rounded-lg px-4 py-2 text-xs sm:text-sm font-medium transition active:scale-95 ${
                 isFollowing
-                  ? 'border border-slate-700 bg-slate-800 text-slate-200 hover:bg-slate-700'
-                  : 'bg-white text-slate-950 shadow-lg shadow-white/10 hover:bg-slate-100'
+                  ? 'border border-zinc-700 bg-zinc-800 text-zinc-200 hover:bg-zinc-700'
+                  : 'bg-white text-zinc-950 hover:bg-zinc-200 shadow-sm'
               }`}
             >
-              {isFollowing ? '✓ Following' : '+ Follow Creator'}
+              {isFollowing ? 'Following' : 'Follow'}
             </button>
             <Link
               to="/create"
-              className="rounded-full border border-slate-700 bg-slate-900 px-5 py-2.5 text-xs font-semibold text-slate-200 transition hover:border-slate-500 hover:text-white"
+              className="flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900/90 px-4 py-2 text-xs sm:text-sm font-medium text-zinc-200 transition hover:bg-zinc-800 hover:text-white"
             >
-              Synthesize Art
+              <PlusIcon className="h-3.5 w-3.5" />
+              <span>Create</span>
             </Link>
           </div>
         </div>
 
         {/* Stats Strip */}
-        <div className="mt-8 grid grid-cols-2 gap-3 border-t border-slate-800/80 pt-6 sm:grid-cols-4">
-          <div className="rounded-2xl border border-slate-800/80 bg-slate-950/60 p-4 text-center">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Total Artworks</span>
-            <p className="mt-1 text-2xl font-bold text-white">{creator.totalCreations}</p>
+        <div className="mt-8 grid grid-cols-2 gap-3 border-t border-zinc-800/80 pt-6 sm:grid-cols-4">
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-950/50 p-3.5 text-center">
+            <span className="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Artworks</span>
+            <p className="mt-1 text-xl font-semibold text-white">{creator.totalCreations}</p>
           </div>
-          <div className="rounded-2xl border border-slate-800/80 bg-slate-950/60 p-4 text-center">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Remix Branches</span>
-            <p className="mt-1 text-2xl font-bold text-indigo-400">{creator.totalRemixes}</p>
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-950/50 p-3.5 text-center">
+            <span className="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Remixes</span>
+            <p className="mt-1 text-xl font-semibold text-zinc-300">{creator.totalRemixes}</p>
           </div>
-          <div className="rounded-2xl border border-slate-800/80 bg-slate-950/60 p-4 text-center">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Hearts Received</span>
-            <p className="mt-1 text-2xl font-bold text-rose-400">❤️ {creator.totalLikes}</p>
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-950/50 p-3.5 text-center">
+            <span className="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Likes</span>
+            <div className="mt-1 flex items-center justify-center gap-1 text-xl font-semibold text-rose-400">
+              <HeartIcon className="h-4 w-4 fill-rose-500" filled />
+              <span>{creator.totalLikes}</span>
+            </div>
           </div>
-          <div className="rounded-2xl border border-slate-800/80 bg-slate-950/60 p-4 text-center">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Saved Moodboard</span>
-            <p className="mt-1 text-2xl font-bold text-cyan-400">🔖 {savedPosts.length}</p>
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-950/50 p-3.5 text-center">
+            <span className="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Saved</span>
+            <div className="mt-1 flex items-center justify-center gap-1 text-xl font-semibold text-zinc-300">
+              <BookmarkIcon className="h-4 w-4" filled />
+              <span>{savedPosts.length}</span>
+            </div>
           </div>
         </div>
       </motion.section>
 
-      {/* Exhibition Gallery & Tabs */}
-      <section className="space-y-6">
+      {/* Tabs & Gallery */}
+      <section className="space-y-5">
         {/* Navigation Tabs */}
-        <div className="flex border-b border-slate-800">
+        <div className="flex border-b border-zinc-800">
           <button
             type="button"
             onClick={() => setActiveTab('creations')}
-            className={`flex items-center gap-2 border-b-2 px-6 py-3 text-sm font-semibold transition ${
+            className={`flex items-center gap-2 border-b-2 px-5 py-3 text-xs sm:text-sm font-medium transition ${
               activeTab === 'creations'
-                ? 'border-cyan-400 text-cyan-300'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? 'border-white text-white'
+                : 'border-transparent text-zinc-400 hover:text-zinc-200'
             }`}
           >
-            <span>Original Creations</span>
-            <span className="rounded-full bg-slate-800 px-2 py-0.5 text-xs text-slate-300">
+            <span>Creations</span>
+            <span className="rounded-md bg-zinc-800 px-2 py-0.5 text-[11px] text-zinc-300">
               {creations.length}
             </span>
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('remixes')}
-            className={`flex items-center gap-2 border-b-2 px-6 py-3 text-sm font-semibold transition ${
+            className={`flex items-center gap-2 border-b-2 px-5 py-3 text-xs sm:text-sm font-medium transition ${
               activeTab === 'remixes'
-                ? 'border-indigo-400 text-indigo-300'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? 'border-white text-white'
+                : 'border-transparent text-zinc-400 hover:text-zinc-200'
             }`}
           >
-            <span>Remix Branches</span>
-            <span className="rounded-full bg-slate-800 px-2 py-0.5 text-xs text-slate-300">
+            <BranchIcon className="h-3.5 w-3.5" />
+            <span>Remixes</span>
+            <span className="rounded-md bg-zinc-800 px-2 py-0.5 text-[11px] text-zinc-300">
               {remixes.length}
             </span>
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('saved')}
-            className={`flex items-center gap-2 border-b-2 px-6 py-3 text-sm font-semibold transition ${
+            className={`flex items-center gap-2 border-b-2 px-5 py-3 text-xs sm:text-sm font-medium transition ${
               activeTab === 'saved'
-                ? 'border-purple-400 text-purple-300'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? 'border-white text-white'
+                : 'border-transparent text-zinc-400 hover:text-zinc-200'
             }`}
           >
-            <span>🔖 Saved Moodboard</span>
-            <span className="rounded-full bg-slate-800 px-2 py-0.5 text-xs text-slate-300">
+            <BookmarkIcon className="h-3.5 w-3.5" />
+            <span>Saved Collection</span>
+            <span className="rounded-md bg-zinc-800 px-2 py-0.5 text-[11px] text-zinc-300">
               {savedPosts.length}
             </span>
           </button>
         </div>
 
         {/* Gallery Grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {displayedPosts.length > 0 ? (
             displayedPosts.map((post) => (
               <ImageCard
@@ -252,17 +263,19 @@ const ProfilePage = () => {
               />
             ))
           ) : (
-            <div className="col-span-full py-16">
+            <div className="col-span-full py-12">
               <EmptyState
                 title={
                   activeTab === 'saved'
-                    ? 'Your Moodboard is empty'
-                    : 'No artworks in this exhibition yet'
+                    ? 'No saved pieces yet'
+                    : activeTab === 'remixes'
+                    ? 'No remixes yet'
+                    : 'No creations yet'
                 }
                 description={
                   activeTab === 'saved'
-                    ? 'Click the bookmark ribbon 🔖 on any artwork in the gallery to save it to your private moodboard.'
-                    : 'Synthesize your first visual concept and exhibit it here.'
+                    ? 'Save artworks from the gallery to build your inspiration collection.'
+                    : 'Create and publish artwork to populate this portfolio.'
                 }
               />
             </div>

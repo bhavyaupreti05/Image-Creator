@@ -1,15 +1,20 @@
+import { SearchIcon } from './Icons';
+
 const SearchBar = ({ value, onChange, onSubmit }) => {
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-3 sm:flex-row">
-      <input
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        placeholder="Search prompts or creators"
-        className="flex-1 rounded-2xl border border-slate-800 bg-slate-950/70 px-4 py-3 text-sm text-white outline-none ring-0 placeholder:text-slate-500"
-      />
+    <form onSubmit={onSubmit} className="flex w-full items-center gap-2">
+      <div className="relative flex-1">
+        <SearchIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+        <input
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder="Search prompts, styles, or creator handles..."
+          className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 pl-10 pr-4 py-2.5 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600"
+        />
+      </div>
       <button
         type="submit"
-        className="rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
+        className="rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-2.5 text-xs sm:text-sm font-medium text-zinc-200 transition hover:bg-zinc-800 hover:text-white"
       >
         Search
       </button>

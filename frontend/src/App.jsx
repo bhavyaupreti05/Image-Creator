@@ -16,7 +16,20 @@ function App() {
           <Route path="/profile/:username" element={<ProfilePage />} />
         </Routes>
       </MainLayout>
-      <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: 3500,
+          style: {
+            background: '#18181b',
+            color: '#f4f4f5',
+            border: '1px solid #27272a',
+            borderRadius: '10px',
+            fontSize: '13px',
+            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)',
+          },
+        }}
+      />
     </BrowserRouter>
   );
 }

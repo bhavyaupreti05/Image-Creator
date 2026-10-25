@@ -1,19 +1,18 @@
-
 const STYLES = [
-  { id: 'All', label: 'All Aesthetics' },
-  { id: 'Cyberpunk', label: '⚡ Cyberpunk' },
-  { id: 'Anime', label: '✨ Anime / Manga' },
-  { id: 'Oil Painting', label: '🎨 Oil Painting' },
-  { id: '3D Render', label: '💎 3D Render' },
-  { id: 'Fantasy', label: '🐉 Dark Fantasy' },
-  { id: 'Surrealism', label: '🌀 Surrealism' },
-  { id: 'Cinematic', label: '🎬 Cinematic' },
-  { id: 'Minimalist', label: '⚪ Minimalist' },
+  { id: 'All', label: 'All' },
+  { id: 'Cinematic', label: 'Cinematic' },
+  { id: 'Cyberpunk', label: 'Cyberpunk' },
+  { id: 'Anime', label: 'Anime' },
+  { id: '3D Render', label: '3D Render' },
+  { id: 'Oil Painting', label: 'Oil Painting' },
+  { id: 'Minimalist', label: 'Minimalist' },
+  { id: 'Fantasy', label: 'Fantasy' },
+  { id: 'Surrealism', label: 'Surrealism' },
 ];
 
 const StyleFilter = ({ selected, onSelect }) => {
   return (
-    <div className="no-scrollbar flex items-center gap-2 overflow-x-auto py-2">
+    <div className="flex items-center gap-1.5 overflow-x-auto py-1 scrollbar-none">
       {STYLES.map((style) => {
         const isActive = selected === style.id;
         return (
@@ -21,10 +20,10 @@ const StyleFilter = ({ selected, onSelect }) => {
             key={style.id}
             type="button"
             onClick={() => onSelect(style.id)}
-            className={`relative whitespace-nowrap rounded-full px-4 py-2 text-xs font-medium transition-all duration-200 ${
+            className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium transition duration-150 ${
               isActive
-                ? 'bg-gradient-to-r from-cyan-500 to-indigo-500 text-white shadow-lg shadow-cyan-500/25 ring-1 ring-white/20'
-                : 'border border-slate-800 bg-slate-900/80 text-slate-400 hover:border-slate-700 hover:bg-slate-800/80 hover:text-slate-200'
+                ? 'bg-zinc-100 text-zinc-950 shadow-sm'
+                : 'text-zinc-400 hover:bg-zinc-800/80 hover:text-zinc-200'
             }`}
           >
             {style.label}
