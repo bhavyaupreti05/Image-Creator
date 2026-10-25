@@ -25,6 +25,19 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
+app.get('/', (req, res) => {
+  res.status(200).json({
+    name: 'Aura Gallery API',
+    status: 'online',
+    version: '1.0.0',
+    endpoints: {
+      health: '/health',
+      posts: '/api/v1/posts',
+      images: '/api/v1/images',
+    },
+  });
+});
+
 app.get('/health', (req, res) => {
   res.status(200).json({ success: true, message: 'API is healthy' });
 });
