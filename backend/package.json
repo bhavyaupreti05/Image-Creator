@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "build": "echo 'No build step required for backend'",
+    "build": "cd ../frontend && npm install && npm run build",
     "test": "node --test"
   },
   "dependencies": {

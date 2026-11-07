@@ -3,14 +3,15 @@ import axios from 'axios';
 export const getBaseApiUrl = () => {
   let url = (import.meta.env.VITE_API_URL || '').trim();
 
-  // If not configured in production, automatically fall back to the live Render backend
+  // If not configured in production, use the current origin
   if (!url) {
     if (
       typeof window !== 'undefined' &&
+      window.location.origin &&
       window.location.hostname !== 'localhost' &&
       window.location.hostname !== '127.0.0.1'
     ) {
-      url = 'https://auraexpo.onrender.com/api/v1';
+      url = `${window.location.origin}/api/v1`;
     } else {
       url = 'http://localhost:5000/api/v1';
     }
