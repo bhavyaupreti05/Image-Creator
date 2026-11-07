@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast';
 import LineageTree from './LineageTree';
 import StoryExportModal from './StoryExportModal';
 import PromptMutationModal from './PromptMutationModal';
+import CertificateOfAuthenticityModal from './CertificateOfAuthenticityModal';
 import {
   HeartIcon,
   BookmarkIcon,
@@ -14,12 +15,14 @@ import {
   ShareIcon,
   DownloadIcon,
   SparklesIcon,
+  CertificateIcon,
 } from './Icons';
 
 const LightboxModal = ({ post, onClose, onLike, isLiked, onSelectPost, onBookmark, isSaved }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('details');
   const [showStoryExport, setShowStoryExport] = useState(false);
+  const [showCertificate, setShowCertificate] = useState(false);
   const [mutationPair, setMutationPair] = useState(null);
   const [copied, setCopied] = useState(false);
 
@@ -242,6 +245,16 @@ const LightboxModal = ({ post, onClose, onLike, isLiked, onSelectPost, onBookmar
 
                       <button
                         type="button"
+                        onClick={() => setShowCertificate(true)}
+                        className="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-amber-300 border border-amber-500/30 bg-amber-500/10 transition hover:bg-amber-500/20"
+                        title="Generate Cryptographic Certificate of Authenticity"
+                      >
+                        <CertificateIcon className="h-3.5 w-3.5" />
+                        <span>Certificate</span>
+                      </button>
+
+                      <button
+                        type="button"
                         onClick={() => setShowStoryExport(true)}
                         className="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-zinc-400 transition hover:bg-zinc-800 hover:text-zinc-200"
                         title="Export 9:16 Story Card"
@@ -306,6 +319,14 @@ const LightboxModal = ({ post, onClose, onLike, isLiked, onSelectPost, onBookmar
           <StoryExportModal
             post={post}
             onClose={() => setShowStoryExport(false)}
+          />
+        )}
+
+        {/* Certificate of Authenticity Modal */}
+        {showCertificate && (
+          <CertificateOfAuthenticityModal
+            post={post}
+            onClose={() => setShowCertificate(false)}
           />
         )}
 

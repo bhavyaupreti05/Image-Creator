@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import PromptInput from '../components/PromptInput';
 import ImagePreview from '../components/ImagePreview';
 import StoryExportModal from '../components/StoryExportModal';
+import CertificateOfAuthenticityModal from '../components/CertificateOfAuthenticityModal';
 import {
   ShareIcon,
   BranchIcon,
@@ -13,6 +14,7 @@ import {
   LockClosedIcon,
   EyeIcon,
   CoinsIcon,
+  CertificateIcon,
 } from '../components/Icons';
 import { createPost, createGenerationJob, streamJobProgress } from '../services/postService';
 import { useAuth } from '../context/AuthContext';
@@ -57,6 +59,7 @@ const CreatePage = () => {
   const [remixAuthor, setRemixAuthor] = useState('');
   const [jobState, setJobState] = useState(null);
   const [showStoryExport, setShowStoryExport] = useState(false);
+  const [showCertificate, setShowCertificate] = useState(false);
 
   useEffect(() => {
     if (user?.username) {
@@ -366,15 +369,27 @@ const CreatePage = () => {
             </button>
 
             {image && (
-              <button
-                type="button"
-                disabled={loading}
-                onClick={handleShare}
-                className="flex items-center gap-1.5 rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-xs sm:text-sm font-medium text-white transition hover:bg-zinc-700 active:scale-95"
-              >
-                <ShareIcon className="h-3.5 w-3.5" />
-                <span>{isPrivate ? 'Save to Vault' : 'Publish'}</span>
-              </button>
+              <>
+                <button
+                  type="button"
+                  onClick={() => setShowCertificate(true)}
+                  className="flex items-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3.5 py-2.5 text-xs sm:text-sm font-medium text-amber-300 transition hover:bg-amber-500/20 active:scale-95"
+                  title="Export Cryptographic Certificate of Authenticity"
+                >
+                  <CertificateIcon className="h-3.5 w-3.5" />
+                  <span>Certificate</span>
+                </button>
+
+                <button
+                  type="button"
+                  disabled={loading}
+                  onClick={handleShare}
+                  className="flex items-center gap-1.5 rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-xs sm:text-sm font-medium text-white transition hover:bg-zinc-700 active:scale-95"
+                >
+                  <ShareIcon className="h-3.5 w-3.5" />
+                  <span>{isPrivate ? 'Save to Vault' : 'Publish'}</span>
+                </button>
+              </>
             )}
           </div>
         </div>
@@ -396,6 +411,20 @@ const CreatePage = () => {
           prompt={prompt}
           author={name}
           onClose={() => setShowStoryExport(false)}
+        />
+      )}
+
+      {showCertificate && image && (
+        <CertificateOfAuthenticityModal
+          post={{
+            _id: `aura-${Date.now()}`,
+            name,
+            prompt,
+            photo: image,
+            model: AI_MODELS.find((m) => m.id === selectedModel)?.name || 'Flux.1 Schnell',
+            createdAt: new Date().toISOString(),
+          }}
+          onClose={() => setShowCertificate(false)}
         />
       )}
     </motion.div>
