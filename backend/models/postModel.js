@@ -32,6 +32,26 @@ const postSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    isPrivate: {
+      type: Boolean,
+      default: false,
+    },
+    model: {
+      type: String,
+      default: 'Flux.1',
+    },
+    negativePrompt: {
+      type: String,
+      default: '',
+    },
+    aspectRatio: {
+      type: String,
+      default: '1:1',
+    },
+    recipePrice: {
+      type: Number,
+      default: 10,
+    },
   },
   {
     timestamps: true,

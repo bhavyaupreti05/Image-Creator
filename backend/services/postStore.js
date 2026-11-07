@@ -148,8 +148,10 @@ export const detectStyleTags = (prompt = '') => {
   return tags;
 };
 
-export const getPostRecords = (tag = '') => {
-  const all = [...inMemoryPosts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+export const getPostRecords = (tag = '', author = '') => {
+  const all = [...inMemoryPosts]
+    .filter((p) => !p.isPrivate || (author && p.name.toLowerCase() === author.toLowerCase()))
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   if (!tag || tag === 'All') {
     return all;
   }

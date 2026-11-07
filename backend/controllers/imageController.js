@@ -32,7 +32,7 @@ export const generateImageController = async (req, res, next) => {
 // Asynchronous Job Submission (HTTP 202 Accepted)
 export const createImageJobController = (req, res, next) => {
   try {
-    const { prompt } = req.body || {};
+    const { prompt, model, aspectRatio, negativePrompt } = req.body || {};
 
     if (!prompt || !prompt.toString().trim()) {
       const error = new Error('Prompt is required');
@@ -40,7 +40,11 @@ export const createImageJobController = (req, res, next) => {
       throw error;
     }
 
-    const job = jobQueue.enqueueJob(prompt.toString().trim());
+    const job = jobQueue.enqueueJob(prompt.toString().trim(), {
+      model,
+      aspectRatio,
+      negativePrompt,
+    });
 
     res.status(202).json({
       success: true,

@@ -203,6 +203,14 @@ const LightboxModal = ({ post, onClose, onLike, isLiked, onSelectPost, onBookmar
                     </div>
                   </div>
 
+                  {/* Model & Recipe Specs */}
+                  <div className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-950/60 p-2.5 text-xs">
+                    <span className="text-zinc-400 text-[11px]">Model Engine:</span>
+                    <span className="font-semibold text-white text-[11px] font-mono">
+                      {post.model || 'Flux.1 Schnell'}
+                    </span>
+                  </div>
+
                   {/* Social Stats */}
                   <div className="flex items-center justify-between border-y border-zinc-800/80 py-3">
                     <button

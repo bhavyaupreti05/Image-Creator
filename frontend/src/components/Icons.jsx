@@ -246,3 +246,133 @@ export const UploadIcon = ({ className = "w-4 h-4" }) => (
     <line x1="12" x2="12" y1="3" y2="15" />
   </svg>
 );
+
+export const LockClosedIcon = ({ className = "w-4 h-4" }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+  </svg>
+);
+
+export const LockOpenIcon = ({ className = "w-4 h-4" }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+    <path d="M7 11V7a5 5 0 0 1 9.9-1" />
+  </svg>
+);
+
+export const BellIcon = ({ className = "w-4 h-4" }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+  </svg>
+);
+
+export const UserIcon = ({ className = "w-4 h-4" }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+);
+
+export const CpuChipIcon = ({ className = "w-4 h-4" }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <rect width="16" height="16" x="4" y="4" rx="2" />
+    <rect width="6" height="6" x="9" y="9" rx="1" />
+    <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3" />
+  </svg>
+);
+
+export const CoinsIcon = ({ className = "w-4 h-4" }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <circle cx="8" cy="8" r="6" />
+    <path d="M18.09 10.37A6 6 0 1 1 10.34 18" />
+    <path d="M7 6h1v4" />
+    <path d="m16.7 13.5.7.7-1.4 1.4" />
+  </svg>
+);
+
+export const EyeIcon = ({ className = "w-4 h-4" }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+export const SlidersIcon = ({ className = "w-4 h-4" }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <line x1="4" x2="4" y1="21" y2="14" />
+    <line x1="4" x2="4" y1="10" y2="3" />
+    <line x1="12" x2="12" y1="21" y2="12" />
+    <line x1="12" x2="12" y1="8" y2="3" />
+    <line x1="20" x2="20" y1="21" y2="16" />
+    <line x1="20" x2="20" y1="12" y2="3" />
+    <line x1="1" x2="7" y1="14" y2="14" />
+    <line x1="9" x2="15" y1="8" y2="8" />
+    <line x1="17" x2="23" y1="16" y2="16" />
+  </svg>
+);

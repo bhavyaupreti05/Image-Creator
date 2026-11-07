@@ -23,12 +23,18 @@ export const getPosts = async (req, res, next) => {
       });
     }
 
-    const filter = {};
+    const filter = { isPrivate: { $ne: true } };
     if (tag && tag !== 'All') {
-      filter.$or = [
-        { styleTags: { $in: [new RegExp(tag, 'i')] } },
-        { prompt: { $regex: tag, $options: 'i' } },
+      filter.$and = [
+        { isPrivate: { $ne: true } },
+        {
+          $or: [
+            { styleTags: { $in: [new RegExp(tag, 'i')] } },
+            { prompt: { $regex: tag, $options: 'i' } },
+          ],
+        },
       ];
+      delete filter.isPrivate;
     }
 
     const [posts, total] = await Promise.all([
@@ -75,7 +81,7 @@ export const searchPosts = async (req, res, next) => {
 
 export const createPost = async (req, res, next) => {
   try {
-    const { name, prompt, photo, parentId, styleTags } = req.body || {};
+    const { name, prompt, photo, parentId, styleTags, isPrivate, model, negativePrompt, aspectRatio, recipePrice } = req.body || {};
 
     if (!name || !name.toString().trim()) {
       const error = new Error('Name is required');
@@ -101,6 +107,11 @@ export const createPost = async (req, res, next) => {
       photo: photo.toString().trim(),
       parentId: parentId ? parentId.toString().trim() : null,
       styleTags: Array.isArray(styleTags) ? styleTags : undefined,
+      isPrivate: Boolean(isPrivate),
+      model: model || 'Flux.1',
+      negativePrompt: negativePrompt || '',
+      aspectRatio: aspectRatio || '1:1',
+      recipePrice: Number(recipePrice) || 10,
     };
 
     if (useFallbackStore()) {

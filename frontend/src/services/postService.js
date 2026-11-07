@@ -152,8 +152,9 @@ export const generateImage = async (prompt) => {
   return response.data;
 };
 
-export const createGenerationJob = async (prompt) => {
-  const response = await api.post('/images/jobs', { prompt });
+export const createGenerationJob = async (prompt, options = {}) => {
+  const payload = typeof options === 'object' ? { prompt, ...options } : { prompt, model: options };
+  const response = await api.post('/images/jobs', payload);
   return response.data;
 };
 

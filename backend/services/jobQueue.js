@@ -23,13 +23,14 @@ class GenerationJobQueue {
     this.emitter.emit(`job:${jobId}`, job);
   }
 
-  enqueueJob(prompt) {
+  enqueueJob(prompt, options = {}) {
     const cleanPrompt = prompt.trim();
     const jobId = `job_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
     const job = {
       id: jobId,
       prompt: cleanPrompt,
+      options: typeof options === 'object' ? options : {},
       status: 'queued',
       progress: 15,
       stage: 'Request accepted & queued in generation pipeline',
@@ -63,13 +64,14 @@ class GenerationJobQueue {
 
     try {
       // Stage 1: Synthesis
+      const modelName = job.options?.model || 'Flux.1';
       this.updateJob(jobId, {
         status: 'synthesizing',
         progress: 45,
-        stage: 'Synthesizing diffusion latent space...',
+        stage: `Synthesizing latent diffusion space with ${modelName}...`,
       });
 
-      const imageOutput = await generateImage(job.prompt);
+      const imageOutput = await generateImage(job.prompt, job.options);
 
       if (!imageOutput) {
         throw new Error('Image generation provider did not return output');

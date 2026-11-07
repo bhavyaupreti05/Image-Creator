@@ -52,10 +52,17 @@ const ImageCard = ({ post, onClick, onLike, isLiked, onBookmark, isSaved }) => {
           className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-102"
         />
 
-        {/* Tag Pill */}
-        <span className="absolute left-3 top-3 rounded-md border border-zinc-700/60 bg-zinc-950/80 px-2 py-0.5 text-[10px] font-medium text-zinc-300 backdrop-blur-sm">
-          {primaryTag}
-        </span>
+        {/* Tag Pill & Model Badge */}
+        <div className="absolute left-3 top-3 flex items-center gap-1.5">
+          <span className="rounded-md border border-zinc-700/60 bg-zinc-950/80 px-2 py-0.5 text-[10px] font-medium text-zinc-300 backdrop-blur-sm">
+            {primaryTag}
+          </span>
+          {post.model && (
+            <span className="rounded-md border border-zinc-700/60 bg-zinc-900/80 px-1.5 py-0.5 text-[9px] font-mono text-zinc-400 backdrop-blur-sm">
+              {post.model}
+            </span>
+          )}
+        </div>
 
         {/* Double click heart animation */}
         <AnimatePresence>
