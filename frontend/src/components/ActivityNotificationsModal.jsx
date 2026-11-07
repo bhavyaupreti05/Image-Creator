@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CloseIcon, BellIcon, BranchIcon, HeartIcon, UserIcon, CoinsIcon, CheckIcon } from './Icons';
 import { useAuth } from '../context/AuthContext';
@@ -5,8 +7,14 @@ import { Link } from 'react-router-dom';
 
 const ActivityNotificationsModal = ({ isOpen, onClose }) => {
   const { notifications, markAllNotificationsRead, unreadCount } = useAuth();
+  const [mounted, setMounted] = useState(false);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  if (!isOpen || !mounted || typeof document === 'undefined') return null;
 
   const getIcon = (type) => {
     switch (type) {
@@ -23,9 +31,9 @@ const ActivityNotificationsModal = ({ isOpen, onClose }) => {
     }
   };
 
-  return (
+  return createPortal(
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-start justify-end p-4 sm:p-6 sm:top-14">
+      <div className="fixed inset-0 z-[100] flex items-start justify-end p-4 sm:p-6 sm:top-14">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -40,7 +48,7 @@ const ActivityNotificationsModal = ({ isOpen, onClose }) => {
           initial={{ opacity: 0, scale: 0.95, y: -10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: -10 }}
-          className="relative w-full max-w-sm overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/95 shadow-2xl backdrop-blur-xl"
+          className="relative z-10 w-full max-w-sm overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/95 shadow-2xl backdrop-blur-xl"
         >
           {/* Header */}
           <div className="flex items-center justify-between border-b border-zinc-800 p-4">
@@ -124,8 +132,10 @@ const ActivityNotificationsModal = ({ isOpen, onClose }) => {
           </div>
         </motion.div>
       </div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 
 export default ActivityNotificationsModal;
+

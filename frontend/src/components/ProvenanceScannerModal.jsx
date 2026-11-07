@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { decodeArtworkDNA } from '../utils/steganography';
 import { toast } from 'react-hot-toast';
@@ -8,7 +9,13 @@ const ProvenanceScannerModal = ({ onClose }) => {
   const [scanning, setScanning] = useState(false);
   const [result, setResult] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
+  const [mounted, setMounted] = useState(false);
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
 
   const processFile = (file) => {
     if (!file || !file.type.startsWith('image/')) {
@@ -55,38 +62,43 @@ const ProvenanceScannerModal = ({ onClose }) => {
     }
   };
 
-  return (
+  if (!mounted || typeof document === 'undefined') return null;
+
+  return createPortal(
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6">
+      <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto p-4 sm:p-6">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="absolute inset-0 bg-zinc-950/80 backdrop-blur-sm"
+          className="fixed inset-0 bg-zinc-950/80 backdrop-blur-md"
         />
 
         {/* Modal Window */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.96, y: 10 }}
+          initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.96, y: 10 }}
-          className="relative z-10 flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900 p-5 sm:p-7 shadow-2xl"
+          exit={{ opacity: 0, scale: 0.95, y: 15 }}
+          className="relative z-10 my-auto flex max-h-[90vh] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/95 p-5 sm:p-6 shadow-2xl backdrop-blur-xl"
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
+          <div className="flex items-center justify-between border-b border-zinc-800 pb-3.5">
             <div>
               <div className="flex items-center gap-2">
-                <span className="flex items-center gap-1 rounded-md border border-zinc-800 bg-zinc-950/80 px-2 py-0.5 text-[11px] font-medium text-emerald-400">
+                <span className="flex items-center gap-1 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-400">
                   <ShieldCheckIcon className="h-3 w-3" />
                   <span>Provenance Verifier</span>
                 </span>
-                <span className="text-xs text-zinc-500">LSB bitstream extraction</span>
+                <span className="text-xs text-zinc-400">LSB Bitstream Extraction</span>
               </div>
-              <h3 className="mt-1 text-lg font-semibold text-white">Verify Artwork Provenance</h3>
+              <h3 className="mt-1 text-base sm:text-lg font-semibold text-white">
+                Verify Artwork Provenance
+              </h3>
             </div>
             <button
+              type="button"
               onClick={onClose}
               className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-400 transition hover:bg-zinc-800 hover:text-white"
             >
@@ -94,13 +106,14 @@ const ProvenanceScannerModal = ({ onClose }) => {
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto py-4 space-y-4">
+          {/* Scrollable Content Body */}
+          <div className="flex-1 overflow-y-auto py-4 space-y-4 pr-1">
             {/* Dropzone */}
             <div
               onDragOver={(e) => e.preventDefault()}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              className="group flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-zinc-700 bg-zinc-950/40 p-6 text-center transition hover:border-zinc-500 hover:bg-zinc-950/60"
+              className="group flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-zinc-700 bg-zinc-950/40 p-5 sm:p-6 text-center transition hover:border-zinc-500 hover:bg-zinc-950/60"
             >
               <input
                 ref={fileInputRef}
@@ -114,15 +127,15 @@ const ProvenanceScannerModal = ({ onClose }) => {
                 <UploadIcon className="h-5 w-5" />
               </div>
 
-              <h4 className="mt-2.5 text-xs sm:text-sm font-medium text-white">
+              <h4 className="mt-2 text-xs sm:text-sm font-medium text-white">
                 Drop artwork PNG to verify provenance
               </h4>
-              <p className="mt-1 text-[11px] sm:text-xs text-zinc-500 max-w-sm">
-                Reads hidden authorship and generation metadata invisibly encoded into pixel bitstreams.
+              <p className="mt-1 text-[11px] text-zinc-400 max-w-sm">
+                Extracts hidden cryptographic authorship, prompt recipe, and timestamp invisibly embedded into image pixels.
               </p>
 
-              <span className="mt-3 rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-300 transition group-hover:bg-zinc-850 group-hover:text-white">
-                Select File
+              <span className="mt-3 rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-300 transition group-hover:bg-zinc-800 group-hover:text-white">
+                Select Artwork File
               </span>
             </div>
 
@@ -132,20 +145,22 @@ const ProvenanceScannerModal = ({ onClose }) => {
                 <img
                   src={previewUrl}
                   alt="Scanned artwork"
-                  className="h-12 w-12 rounded-lg object-cover"
+                  className="h-12 w-12 rounded-lg object-cover ring-1 ring-zinc-700"
                 />
                 <div className="overflow-hidden">
                   <p className="text-xs font-medium text-white truncate">Loaded Image Buffer</p>
-                  <p className="text-[11px] text-zinc-500">Scanning canvas pixel channels...</p>
+                  <p className="text-[11px] text-zinc-400">
+                    {scanning ? 'Scanning canvas pixel channels...' : 'Canvas decoded'}
+                  </p>
                 </div>
               </div>
             )}
 
             {/* Scanning Indicator */}
             {scanning && (
-              <div className="flex items-center justify-center space-x-2 py-4">
+              <div className="flex items-center justify-center space-x-2 py-3 rounded-xl bg-zinc-950/40 border border-zinc-800">
                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-400 border-t-transparent" />
-                <span className="text-xs text-zinc-400">Extracting LSB metadata from canvas...</span>
+                <span className="text-xs text-zinc-400">Extracting LSB metadata from canvas pixels...</span>
               </div>
             )}
 
@@ -167,11 +182,11 @@ const ProvenanceScannerModal = ({ onClose }) => {
                           <h4 className="text-xs sm:text-sm font-semibold text-emerald-400">
                             Cryptographically Verified Artwork
                           </h4>
-                          <p className="text-[11px] text-zinc-500">Authentic watermark signature confirmed</p>
+                          <p className="text-[11px] text-zinc-400">Authentic watermark signature confirmed</p>
                         </div>
                       </div>
                       <span className="rounded-md bg-emerald-950/60 px-2 py-0.5 text-[10px] font-medium text-emerald-300 border border-emerald-800/60">
-                        Authentic
+                        Authentic DNA
                       </span>
                     </div>
 
@@ -193,7 +208,7 @@ const ProvenanceScannerModal = ({ onClose }) => {
                       <p className="leading-relaxed text-zinc-300 text-xs">{result.data.prompt}</p>
                     </div>
 
-                    <div className="flex items-center justify-between text-[11px] text-zinc-500 pt-1">
+                    <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-1">
                       <span>Fingerprint: <code className="text-zinc-300 font-mono text-[10px]">{result.data.fingerprint?.slice(0, 16)}...</code></span>
                       <span>Branch: {result.data.parentId ? 'Remix Fork' : 'Original Root'}</span>
                     </div>
@@ -226,7 +241,8 @@ const ProvenanceScannerModal = ({ onClose }) => {
           </div>
         </motion.div>
       </div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 
